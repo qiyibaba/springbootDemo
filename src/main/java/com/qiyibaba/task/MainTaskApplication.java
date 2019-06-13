@@ -13,7 +13,7 @@ import com.qiyibaba.task.config.EnableBatchTask;
 @SpringBootApplication
 @EnableBatchTask
 @EnableCaching
-@MapperScan("com.lt.task")
+@MapperScan("com.qiyibaba.task")
 @ComponentScan(basePackages = {"com.qiyibaba.task"})
 public class MainTaskApplication {
 
