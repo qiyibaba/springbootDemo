@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT" follow="true">
+			<PatternLayout>
+				<pattern>%d %p %C{1.} [%t] %m%n</pattern>
+			</PatternLayout>
+		</Console>
+		<!-- 按日期每天生成log文件 -->
+		<RollingFile name="RollingFile" fileName="citiccard_goldendb.log"
+			filePattern="citiccard_goldendb-%d{yyyy-MM-dd}.log">
+			<PatternLayout pattern="%d %p %C{1.} [%t] %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" />
+			</Policies>
+			<!-- log文件只打印error级别信息 -->
+			<Filters>
+				<ThresholdFilter level="error" onMatch="ACCEPT"
+					onMismatch="DENY" />
+			</Filters>
+		</RollingFile>
+		<!--druid的日志记录追加器-->
+        <RollingFile name="druidSqlRollingFile" fileName="druid-sql.log"
+                     filePattern="logs/$${date:yyyy-MM}/api-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] %-5level %L %M - %msg%xEx%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+	</Appenders>
+	<Loggers>
+		<!-- 输出info级别信息 -->
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+		</Root>
+		
+        <logger name="com.alibaba.druid" level="debug" additivity="false">
+            <appender-ref ref="druidSqlRollingFile"/>
+        </logger>
+	</Loggers>
+</Configuration> 
